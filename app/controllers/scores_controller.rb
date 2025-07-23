@@ -3,18 +3,34 @@ class ScoresController < ApplicationController
 
   # GET /scores
   def index
-    @scores = Score.all
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+
+    if params[:workout_id]
+      @scores = Score.where(workout_id: params[:workout_id])
+    else
+      @scores = Score.all
+    end
 
     render json: @scores
   end
 
   # GET /scores/1
   def show
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+
     render json: @score
   end
 
   # POST /scores
   def create
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+
     @score = Score.new(score_params)
 
     if @score.save
@@ -26,11 +42,24 @@ class ScoresController < ApplicationController
 
   # PATCH/PUT /scores/1
   def update
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+
     if @score.update(score_params)
       render json: @score
     else
       render json: @score.errors, status: :unprocessable_entity
     end
+  end
+
+
+  # OPTIONS /scores or /scores/:id
+  def options
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+    head :ok
   end
 
   # DELETE /scores/1
